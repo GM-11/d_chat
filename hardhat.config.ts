@@ -9,6 +9,10 @@ const config: typeof HardhatUserConfig = {
     hardhat: {
       chainId: 1337
     },
+    sepolia: {
+      url: `https://sepolia.infura.io/v3/${process.env.INFURA_API_KEY}`,
+      accounts: [`0x${process.env.PRIVATE_KEY}`]
+    }
   },
   paths: {
     artifacts: "./artifacts"
@@ -16,4 +20,4 @@ const config: typeof HardhatUserConfig = {
 
 };
 
-module.exports =  config;
+module.exports = config;

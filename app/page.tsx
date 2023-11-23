@@ -5,7 +5,7 @@ import ChatABI from "../artifacts/contracts/Chat.sol/Chat.json";
 import { ethers, BrowserProvider } from "ethers";
 
 function Home() {
-  const contractAddress = "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6";
+  const contractAddress = "0x8260cbc13393d3A310AE4765F9B0382C8F6AFa9C";
   const abi = ChatABI.abi;
 
   const [provider, setProvider] = useState<BrowserProvider>();
@@ -35,6 +35,28 @@ function Home() {
     }
 
     loadProvider();
+    checkIfAccountChanged();
+  }, []);
+
+  async function checkIfAccountChanged() {
+    try {
+      const { ethereum } = window;
+      ethereum.on("accountsChanged", async (accounts: string[]) => {
+        console.log("Account changed to:", accounts[0]);
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const signer = await provider.getSigner();
+
+        setAddress(accounts[0]);
+        setProvider(provider);
+        setSigner(signer);
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  useEffect(() => {
+    checkIfAccountChanged();
   }, []);
 
   useEffect(() => {
@@ -50,17 +72,21 @@ function Home() {
   });
 
   async function sendMessage() {
-    const timestamp = new Date().getTime();
-    const contract = new ethers.Contract(contractAddress, abi, signer);
-    const tx = await contract.sendMessage(message, BigInt(timestamp));
-    await tx.wait();
-    setMessage("");
+    try {
+      const timestamp = new Date().getTime();
+      const contract = new ethers.Contract(contractAddress, abi, signer);
+      const tx = await contract.sendMessage(message, BigInt(timestamp));
+      await tx.wait();
+      setMessage("");
 
-    const c = new ethers.Contract(contractAddress, abi, provider);
+      const c = new ethers.Contract(contractAddress, abi, provider);
 
-    const newMessages = await c.getAllMessages();
-    // newMessages
-    setMessages(newMessages);
+      const newMessages = await c.getAllMessages();
+      // newMessages
+      setMessages(newMessages);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -81,13 +107,17 @@ function Home() {
           <ul
             style={{
               display: "flex",
-              flexDirection: "column",
+              flexDirection: "column-reverse",
               width: "97%",
               borderRadius: "10px",
               border: "1px solid black",
             }}
           >
             {messages.map((m) => {
+              if (m[0] == address) {
+                console.log("address", address);
+                console.log("m[0]", m[0]);
+              }
               if (m[1] != "")
                 return (
                   <li
@@ -100,8 +130,6 @@ function Home() {
                             width: "fit-content",
                             padding: "1rem",
                             borderRadius: "10px",
-                            right: "0",
-                            left: "100%",
                           }
                         : {
                             backgroundColor: "rgba(0,0, 255, 0.5)",
@@ -110,7 +138,6 @@ function Home() {
                             width: "fit-content",
                             padding: "1rem",
                             borderRadius: "10px",
-                            left: "0",
                           }
                     }
                     key={messages.indexOf(m)}
