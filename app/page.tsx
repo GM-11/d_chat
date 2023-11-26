@@ -138,7 +138,7 @@ function Home() {
       )}
 
       <p>
-        This website is hosted on the <strong>Sepolia</strong> network. Go to
+        This website is hosted on the <strong>Sepolia</strong> network. Go to{" "}
         <a href="https://sepoliafaucet.com/">Sepolia Faucet</a> and get free
         SepoliaETH
       </p>

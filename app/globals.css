@@ -13,7 +13,7 @@
 body {
   padding: 0;
   margin: 0;
-  background-color: rgb(14, 10, 36);
+  background-color: #0e0a24
 
   
    /* background-color: ; */
@@ -47,7 +47,7 @@ h2 {
   border: 1px solid aqua;
   padding: 1rem;
   margin: 0 1rem;
-  background-color: rgb(217, 234, 238);
+  background-color: #d9e9ed
 }
 ul {
   display: flex;
@@ -62,7 +62,7 @@ button {
   border-style: none;
   padding: 1rem;
   color: white;
-  background-color: rgb(218, 134,8);
+  background-color: #da8608;
   font-weight: 800;
   /* font-size: 1rem; */
   cursor: pointer;
