@@ -7,6 +7,10 @@ const inter = Inter({ subsets: ['latin'] })
 export const metadata: Metadata = {
   title: 'DChat',
   description: 'A decentralized open chat app',
+  icons: {
+    // '/favicon.png': 'any',
+    icon: '/favicon.png',
+  },
 }
 
 export default function RootLayout({
@@ -16,6 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <link rel="icon" href="./favicon.png" sizes="any" />
       <body className={inter.className}>{children}</body>
     </html>
   )
