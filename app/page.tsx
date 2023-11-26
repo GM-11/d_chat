@@ -15,26 +15,26 @@ function Home() {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    async function loadProvider() {
-      const provider = new ethers.BrowserProvider(window.ethereum);
-      if (provider) {
-        console.log("Ethereum successfully detected!");
+  async function loadProvider() {
+    const provider = new ethers.BrowserProvider(window.ethereum);
+    if (provider) {
+      console.log("Ethereum successfully detected!");
 
-        const accounts = await window.ethereum.request({
-          method: "eth_requestAccounts",
-        });
+      const accounts = await window.ethereum.request({
+        method: "eth_requestAccounts",
+      });
 
-        const signer = await provider.getSigner();
+      const signer = await provider.getSigner();
 
-        setAddress(accounts[0]);
-        setProvider(provider);
-        setSigner(signer);
-      } else {
-        console.log("Please install MetaMask!");
-      }
+      setAddress(accounts[0]);
+      setProvider(provider);
+      setSigner(signer);
+    } else {
+      console.log("Please install MetaMask!");
     }
+  }
 
+  useEffect(() => {
     loadProvider();
     checkIfAccountChanged();
   }, []);
@@ -84,7 +84,6 @@ function Home() {
       const c = new ethers.Contract(contractAddress, abi, provider);
 
       const newMessages = await c.getAllMessages();
-      // newMessages
       setMessages(newMessages);
       setLoading(false);
     } catch (error) {
@@ -95,22 +94,25 @@ function Home() {
   return (
     <div className="main">
       {address === "" ? (
-        <p>Not connected</p>
+        <>
+          <p>Not connected</p>
+          <button onClick={loadProvider}>Connect to MetaMask</button>
+        </>
       ) : (
-        <p>
+        <p className="header">
           Your address: <strong>{address}</strong>
+          <div className="input">
+            <input
+              onChange={(e) => {
+                setMessage(e.target.value);
+              }}
+              type="text"
+            />
+            <button onClick={sendMessage}>Submit</button>
+          </div>
         </p>
       )}
-      <div className="input">
-        <input
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-          type="text"
-        />
-        {/* <br /> */}
-        <button onClick={sendMessage}>Submit</button>
-      </div>
+
       {messages.length > 0 ? (
         <>
           {loading ? <p>Loading...</p> : <></>}
@@ -137,7 +139,7 @@ function Home() {
         <p>No messages</p>
       )}
 
-      <p>
+      <p className="footer">
         This website is hosted on the <strong>Sepolia</strong> network. Go to{" "}
         <a href="https://sepoliafaucet.com/">Sepolia Faucet</a> and get free
         SepoliaETH
