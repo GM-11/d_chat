@@ -5,7 +5,7 @@ import ChatABI from "../artifacts/contracts/Chat.sol/Chat.json";
 import { ethers, BrowserProvider } from "ethers";
 
 function Home() {
-  const contractAddress = "0x8260cbc13393d3A310AE4765F9B0382C8F6AFa9C";
+  const contractAddress = "0xfC4C1c8f5BE78B8645227F58081AeF69685C9AC1";
   const abi = ChatABI.abi;
 
   const [provider, setProvider] = useState<BrowserProvider>();
@@ -13,6 +13,7 @@ function Home() {
   const [signer, setSigner] = useState<ethers.Signer>();
   const [messages, setMessages] = useState<string[]>([]);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     async function loadProvider() {
@@ -73,6 +74,7 @@ function Home() {
 
   async function sendMessage() {
     try {
+      setLoading(true);
       const timestamp = new Date().getTime();
       const contract = new ethers.Contract(contractAddress, abi, signer);
       const tx = await contract.sendMessage(message, BigInt(timestamp));
@@ -84,6 +86,7 @@ function Home() {
       const newMessages = await c.getAllMessages();
       // newMessages
       setMessages(newMessages);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -91,64 +94,46 @@ function Home() {
 
   return (
     <div>
-      <p>Your address: {address}</p>
-      <input
-        onChange={(e) => {
-          setMessage(e.target.value);
-        }}
-        value={message}
-        type="text"
-      />
-      <button onClick={sendMessage}>Submit</button>
-
+      {address === "" ? (
+        <p>Not connected</p>
+      ) : (
+        <p>
+          Your address: <strong>{address}</strong>
+        </p>
+      )}
+      <div className="input">
+        <input
+          onChange={(e) => {
+            setMessage(e.target.value);
+          }}
+          type="text"
+        />
+        {/* <br /> */}
+        <button onClick={sendMessage}>Submit</button>
+      </div>
       {messages.length > 0 ? (
-        <div>
+        <>
+          {loading ? <p>Loading...</p> : <></>}
           <h2>Messages:</h2>
-          <ul
-            style={{
-              display: "flex",
-              flexDirection: "column-reverse",
-              width: "97%",
-              borderRadius: "10px",
-              border: "1px solid black",
-            }}
-          >
+          <ul>
             {messages.map((m) => {
-              if (m[0] == address) {
-                console.log("address", address);
-                console.log("m[0]", m[0]);
-              }
               if (m[1] != "")
                 return (
                   <li
-                    style={
-                      m[0] != address
-                        ? {
-                            backgroundColor: "rgba(255, 0, 0, 0.5)",
-                            margin: "1rem 2rem",
-                            listStyle: "none",
-                            width: "fit-content",
-                            padding: "1rem",
-                            borderRadius: "10px",
-                          }
-                        : {
-                            backgroundColor: "rgba(0,0, 255, 0.5)",
-                            margin: "1rem 2rem",
-                            listStyle: "none",
-                            width: "fit-content",
-                            padding: "1rem",
-                            borderRadius: "10px",
-                          }
-                    }
+                    className="chat-box"
+                    style={{
+                      backgroundColor: "rgba(0, 255,0, 0.5)",
+                    }}
                     key={messages.indexOf(m)}
                   >
-                    <h2>{m[1]}</h2>
                     <p>{m[0]}</p>
+                    <h2>{m[1]}</h2>
                   </li>
                 );
             })}
+            ``
           </ul>
-        </div>
+        </>
       ) : (
         <p>No messages</p>
       )}
