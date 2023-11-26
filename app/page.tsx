@@ -114,7 +114,6 @@ function Home() {
       {messages.length > 0 ? (
         <>
           {loading ? <p>Loading...</p> : <></>}
-          <h2>Messages:</h2>
           <ul>
             {messages.map((m) => {
               if (m[1] != "")
