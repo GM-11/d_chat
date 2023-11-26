@@ -5,7 +5,24 @@
 
   padding: 0;
   margin: 0;
+
+  line-height: 1.5;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+  color: white
 }
+body {
+  padding: 0;
+  margin: 0;
+  background-color: rgb(14, 10, 36);
+
+  
+   /* background-color: ; */
+}
+
+/* html {
+  line-height: 1.5;
+  scroll-behavior: smooth;
+} */
 
 .chat-box {
   margin: 1rem 2rem;
@@ -24,26 +41,28 @@ h2 {
   justify-content: space-between;
 }
 
-.input > input{
+.input > input {
   width: 80%;
   border-radius: 10px;
-  border: 1px solid black;
+  border: 1px solid aqua;
   padding: 1rem;
   margin: 0 1rem;
+  background-color: rgb(217, 234, 238);
 }
 ul {
   display: flex;
   flex-direction: column-reverse;
-  width: 97%;
+  width: 95%;
   border-radius: 10px;
-  border: 1px solid black;
+  border: 1px solid aqua;
   margin: 0;
 }
 button {
   border-radius: 10px;
   border-style: none;
   padding: 1rem;
-  background-color: rgb(19, 201, 171);
+  color: white;
+  background-color: rgb(218, 134,8);
   font-weight: 800;
   /* font-size: 1rem; */
   cursor: pointer;

@@ -93,7 +93,7 @@ function Home() {
   }
 
   return (
-    <div>
+    <div className="main">
       {address === "" ? (
         <p>Not connected</p>
       ) : (
@@ -122,7 +122,7 @@ function Home() {
                   <li
                     className="chat-box"
                     style={{
-                      backgroundColor: "rgba(0, 255,0, 0.5)",
+                      backgroundColor: "rgb(218, 134,8)",
                     }}
                     key={messages.indexOf(m)}
                   >
@@ -131,12 +131,17 @@ function Home() {
                   </li>
                 );
             })}
-            ``
           </ul>
         </>
       ) : (
         <p>No messages</p>
       )}
+
+      <p>
+        This website is hosted on the <strong>Sepolia</strong> network. Go to
+        <a href="https://sepoliafaucet.com/">Sepolia Faucet</a> and get free
+        SepoliaETH
+      </p>
     </div>
   );
 }
